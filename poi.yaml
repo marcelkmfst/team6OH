@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poi
+  template:
+    metadata:
+      labels:
+        app: poi
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: poi
+        image: registryjpn0775.azurecr.io/poi:v1
+        env:
+        - name: SQL_USER
+          value: "sqladminjPn0775"
+        - name: SQL_PASSWORD
+          value: "nH9ju5Cb2"
+        - name: SQL_SERVER
+          value: "sqlserverjpn0775.database.windows.net"
+        - name: SQL_DBNAME
+          value: "mydrivingDB"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: poi
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: poi
