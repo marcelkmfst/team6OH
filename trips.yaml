@@ -15,20 +15,26 @@ spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: poi
+      - name: trips
         image: registryjpn0775.azurecr.io/trips:v1
         env:
-        - name: ALLOW_EMPTY_PASSWORD
-          value: "yes"
+          - name: SQL_USER
+            value: "sqladminjPn0775"
+          - name: SQL_PASSWORD
+            value: "nH9ju5Cb2"
+          - name: SQL_SERVER
+            value: "sqlserverjpn0775.database.windows.net"
+          - name: SQL_DBNAME
+            value: "mydrivingDB"
         ports:
-        - containerPort: 8080
+        - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: poi
+  name: trips
 spec:
   ports:
-  - port: 8080
+  - port: 80
   selector:
-    app: poi
+    app: trips
