@@ -4,19 +4,44 @@ metadata:
   name: web-dev-full-access
   namespace: web-dev
 rules:
-- apiGroups: ["", "extensions", "apps"]
+- apiGroups: ["*"]
   resources: ["*"]
   verbs: ["*"]
-- apiGroups: ["batch"]
-  resources:
-  - jobs
-  - cronjobs
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: web-dev-ro-access
+  namespace: web-dev
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-dev-full-access
+  namespace: api-dev
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
   verbs: ["*"]
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-dev-ro-access
+  namespace: api-dev
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: web-dev-access
+  name: web-dev-full-access
   namespace: web-dev
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -24,34 +49,43 @@ roleRef:
   name: web-dev-full-access
 subjects:
 - kind: Group
-  namespace: web-dev
-  name: groupObjectId
----
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-    name: api-dev-full-access
-    namespace: api-dev
-rules:
-- apiGroups: ["", "extensions", "apps"]
-    resources: ["*"]
-    verbs: ["*"]
-- apiGroups: ["batch"]
-    resources:
-    - jobs
-    - cronjobs
-    verbs: ["*"]
+  name: f6dbf669-4556-4d53-8612-785be15c6737  # web-dev group
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    name: api-dev-access
-    namespace: web-dev
+  name: web-dev-ro-access
+  namespace: web-dev
 roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: web-dev-full-access
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: web-dev-ro-access
 subjects:
 - kind: Group
-    namespace: web-dev
-    name: groupObjectId  
+  name: 5b884002-0e6e-4999-89a5-a70f36b91b52 # api-dev group
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-dev-ro-access
+  namespace: api-dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: api-dev-ro-access
+subjects:
+- kind: Group
+  name: f6dbf669-4556-4d53-8612-785be15c6737  # web-dev group
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-dev-full-access
+  namespace: api-dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: api-dev-full-access
+subjects:
+- kind: Group
+  name: 5b884002-0e6e-4999-89a5-a70f36b91b52 # api-dev group
