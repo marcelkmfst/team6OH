@@ -15,7 +15,7 @@ spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: poi
+      - name: user-java
         image: registryjpn0775.azurecr.io/user-java:v1
         env:
         - name: SQL_USER

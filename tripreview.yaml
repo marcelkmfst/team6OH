@@ -22,9 +22,9 @@ spec:
         - containerPort: 80
         env:
         - name: USERPROFILE_API_ENDPOINT
-          value: "http://endpoint.you.specify(:port)"
+          value: "http://userprofile"
         - name: TRIPS_API_ENDPOINT
-          value: "http://endpoint.you.specify(:port)"
+          value: "http://trips"
         - name: BING_MAPS_KEY
           value: ""
 ---
